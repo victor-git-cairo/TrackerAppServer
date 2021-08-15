@@ -13,8 +13,10 @@ app.use(express.json());
 app.use(cors())
 
 //endpoints
-app.get('/status', (req, res) => {
-  res.send(req.rl)
+app.post('/register', (req, res) => {
+  res.send({
+    message: `The user ${req.body.email} is now registered`
+  })
 })
 // sssdsd
 app.listen(process.env.PORT || 3000)
