@@ -3,6 +3,8 @@ const bodyParse = require('body-parser')
 // https://stackoverflow.com/questions/66548302/body-parser-deprecated
 const cors = require('cors')
 const morgan = require('morgan')
+const { sequelize } = require('./models')
+const config = require('./config/config')
 
 
 // app.use - setup configuration
@@ -12,11 +14,18 @@ app.use(morgan('combined'));
 app.use(express.json());
 app.use(cors())
 
-//endpoints
-app.post('/register', (req, res) => {
-  res.send({
-    message: `The user ${req.body.email} is now registered`
-  })
+require('./router')(app) // passing the app as parameter
+
+
+sequelize.sync()
+.then(() => {
+  app.listen(config.port)
+  console.log(`Server started on port ${config.port}`)
+
 })
-// sssdsd
+
+
+
 app.listen(process.env.PORT || 3000)
+
+// https://www.youtube.com/watch?v=_xUUdsHVyIg&list=PLRhWUdOnZHkkRn-colvhp4Z_q0yvXY12p
